@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "tsnd --respawn --transpile-only --clear --require tsconfig-paths/register ./src/index.ts",
+        "dev": "tsnd --respawn --transpile-only --clear --require tsconfig-paths/register --env-file=.env ./src/index.ts",
         "start": "node ./dist/index.js",
         "build": "tsc"
     },

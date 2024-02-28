@@ -1,1 +1,3 @@
-console.log('Hello, world');
+import { env } from '@/env';
+
+console.log(env.NODE_ENV);
