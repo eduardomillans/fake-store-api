@@ -1,3 +1,8 @@
-import { env } from '@/env';
+import { Server } from '@/web/server';
 
-console.log(env.NODE_ENV);
+async function boostrap() {
+    const server = new Server();
+    await server.start();
+}
+
+boostrap();
