@@ -1,3 +1,5 @@
+import'reflect-metadata';
+
 import { Server } from '@/web/server';
 
 async function boostrap() {
