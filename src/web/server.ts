@@ -6,6 +6,7 @@ import type { DependencyContainer } from 'tsyringe';
 import { env } from '@/shared/env';
 import { Router } from '@/web/router';
 import { ValidationException } from '@/shared/exceptions/validation.exception';
+import { NotFoundException } from '@/shared/exceptions/not-found.exception';
 
 export class Server {
     private app?: express.Application;
@@ -18,18 +19,22 @@ export class Server {
     private setup(): void {
         this.app = express();
 
-        // Middlewares
+        // Set middlewares
         this.app.use(express.json());
         this.app.use(cors());
         this.app.use(morgan('dev'));
 
-        // Routes
+        // Set router
         this.app.use('/api', Router.routes(this.container));
 
-        // Error
+        // Catch errors
         this.app.use((error: express.ErrorRequestHandler, _: express.Request, res: express.Response, next: express.NextFunction) => {
             if (error instanceof ValidationException) {
                 return res.status(400).json({ message: error.message });
+            }
+
+            if (error instanceof NotFoundException) {
+                return res.status(404).json({ message: error.message });
             }
 
             if (error instanceof Error) {
