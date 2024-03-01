@@ -2,14 +2,15 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import type { DependencyContainer } from 'tsyringe';
 import { env } from '@/shared/env';
-import { router } from '@/web/router';
+import { Router } from '@/web/router';
 
 export class Server {
     private app?: express.Application;
     private server?: http.Server;
 
-    public constructor() {
+    public constructor(private readonly container: DependencyContainer) {
         this.setup();
     }
 
@@ -22,7 +23,7 @@ export class Server {
         this.app.use(morgan('dev'));
 
         // Routes
-        this.app.use('/api', router);
+        this.app.use('/api', Router.routes(this.container));
     }
 
     public async start(): Promise<void> {
