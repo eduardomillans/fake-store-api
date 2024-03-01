@@ -5,6 +5,10 @@ import { Category } from '@/category/category';
 export class PostgresCategoryRepository implements CategoryRepository {
     public constructor() {}
 
+    public async findMany(): Promise<Category[]> {
+        return await sql<Category[]>`SELECT * FROM public.categories`;
+    }
+
     public async create({ name, imageUrl }: CreateCategoryAttributes): Promise<Category> {
         const date = new Date();
 
