@@ -9,6 +9,6 @@ export class CreateCategory implements Feature<CreateCategoryDto, Category> {
     public constructor(private readonly repository: CategoryRepository) {}
 
     public async handle({ name, imageUrl }: CreateCategoryDto): Promise<Category> {
-        return await this.repository.create({ name, imageUrl });
+        return this.repository.create({ name, imageUrl });
     }
 }
