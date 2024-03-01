@@ -5,4 +5,4 @@ import { PostgresCategoryRepository } from '@/category/persistence/postgres-cate
 
 container.register(CategoryRepository as NonAbstractClass<CategoryRepository>, PostgresCategoryRepository);
 
-export default container;
+export { container };

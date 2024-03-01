@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import type { InjectionToken } from 'tsyringe';
 import { glob } from 'glob';
-import container from '@/shared/ioc/container';
 import { METADATA_KEY } from '@/shared/constants';
 import type { ControllerMetadata } from '@/shared/types';
+import { container } from '@/shared/ioc/container';
 
 export const router = Router();
 
