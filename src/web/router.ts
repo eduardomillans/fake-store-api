@@ -24,7 +24,13 @@ export class Router {
             for (const route of routes) {
                 middlewares.push(...route.middlewares);
 
-                router[route.method](`${prefix}${route.path}`, ...middlewares, instance[route.action].bind(instance));
+                router[route.method](`${prefix}${route.path}`, ...middlewares, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+                    try {
+                        await instance[route.action](req, res, next);
+                    } catch (error) {
+                        next(error);
+                    }
+                });
             }
         }
 
