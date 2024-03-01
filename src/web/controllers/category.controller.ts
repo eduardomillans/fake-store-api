@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { controller, httpPost } from '@/shared/decorators';
+import { controller, httpPost } from '@/shared/decorators/http';
 import { createCategorySchema } from '@/category/dtos/create-category.dto';
 import { CreateCategory } from '@/category/features/create-category';
 

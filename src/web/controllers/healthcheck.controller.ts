@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { controller, httpGet } from '@/shared/decorators';
+import { controller, httpGet } from '@/shared/decorators/http';
 
 @controller('/healthcheck')
 export default class HealthCheckController {
