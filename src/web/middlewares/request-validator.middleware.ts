@@ -5,6 +5,8 @@ import { ValidationException } from '@/shared/exceptions/validation.exception';
 export class RequestValidatorMiddleware {
     public static with(schema: ZodSchema) {
         return (req: Request, _: Response, next: NextFunction) => {
+            Object.assign(req.body, req.params);
+
             try {
                 schema.parse(req.body);
                 next();

@@ -1,5 +1,5 @@
 import { sql } from '@/shared/database/postgres';
-import { CategoryRepository, CreateCategoryAttributes } from '@/category/persistence/contracts/category.repository';
+import { CategoryRepository, CreateCategoryAttributes, UpdateCategoryAttributes } from '@/category/persistence/contracts/category.repository';
 import { Category } from '@/category/category';
 
 export class PostgresCategoryRepository implements CategoryRepository {
@@ -25,5 +25,18 @@ export class PostgresCategoryRepository implements CategoryRepository {
         `;
 
         return category;
+    }
+
+    public async update({ id, name, imageUrl }: UpdateCategoryAttributes): Promise<Category | null> {
+        const date = new Date();
+
+        const [category] = await sql<[Category?]>`
+            UPDATE public.categories
+            SET name = ${name}, image_url = ${imageUrl}, updated_at = ${date}
+            WHERE id = ${id}
+            RETURNING *
+        `;
+
+        return category ?? null;
     }
 }

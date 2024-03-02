@@ -1,17 +1,20 @@
 import type { Request, Response } from 'express';
-import { controller, httpGet, httpPost } from '@/shared/decorators/http';
+import { controller, httpGet, httpPost, httpPut } from '@/shared/decorators/http';
 import { RequestValidatorMiddleware } from '@/web/middlewares/request-validator.middleware';
-import { createCategorySchema } from '@/category/dtos/create-category.dto';
-import { CreateCategory } from '@/category/features/create-category';
 import { FindManyCategories } from '@/category/features/find-many-categories';
 import { FindOneCategory } from '@/category/features/find-one-category';
+import { CreateCategory } from '@/category/features/create-category';
+import { UpdateCategory } from '@/category/features/update-category';
+import { createCategorySchema } from '@/category/dtos/create-category.dto';
+import { updateCategorySchema } from '@/category/dtos/update-category.dto';
 
 @controller('/categories')
 export default class CategoryController {
     public constructor(
-        private readonly createCategory: CreateCategory,
         private readonly findManyCategories: FindManyCategories,
         private readonly findOneCategory: FindOneCategory,
+        private readonly createCategory: CreateCategory,
+        private readonly updateCategory: UpdateCategory,
     ) {}
 
     @httpGet('/')
@@ -33,6 +36,13 @@ export default class CategoryController {
     @httpPost('/', RequestValidatorMiddleware.with(createCategorySchema))
     public async create(req: Request, res: Response) {
         const category = await this.createCategory.handle(req.body);
+
+        return res.json(category);
+    }
+
+    @httpPut('/:id', RequestValidatorMiddleware.with(updateCategorySchema))
+    public async update(req: Request, res: Response) {
+        const category = await this.updateCategory.handle(req.body);
 
         return res.json(category);
     }
