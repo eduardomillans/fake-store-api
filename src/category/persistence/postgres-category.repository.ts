@@ -1,6 +1,6 @@
 import { sql } from '@/shared/database/postgres';
 import { CategoryRepository, CreateCategoryAttributes, UpdateCategoryAttributes } from '@/category/persistence/contracts/category.repository';
-import { Category } from '@/category/category';
+import { Category, CategoryId } from '@/category/category';
 
 export class PostgresCategoryRepository implements CategoryRepository {
     public constructor() {}
@@ -38,5 +38,18 @@ export class PostgresCategoryRepository implements CategoryRepository {
         `;
 
         return category ?? null;
+    }
+
+    public async delete(id: CategoryId): Promise<Category | null> {
+        const [category] = await sql<[Category?]>`
+            DELETE FROM public.categories WHERE id = ${id}
+            RETURNING *
+        `;
+
+        if (!category) {
+            return null;
+        }
+
+        return category;
     }
 }

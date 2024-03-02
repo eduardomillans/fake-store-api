@@ -1,3 +1,5 @@
+export type CategoryId = NonNullable<Category['id']>;
+
 export class Category {
     public id?: string;
     public name: string;
