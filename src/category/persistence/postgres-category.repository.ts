@@ -9,7 +9,7 @@ export class PostgresCategoryRepository implements CategoryRepository {
         return await sql<Category[]>`SELECT * FROM public.categories`;
     }
 
-    public async findOne(id: NonNullable<Category['id']>): Promise<Category | null> {
+    public async findOne(id: CategoryId): Promise<Category | null> {
         const [category] = await sql<[Category?]>`SELECT * FROM public.categories WHERE id = ${id}`;
 
         return category ?? null;
