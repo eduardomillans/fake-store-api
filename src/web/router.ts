@@ -22,15 +22,18 @@ export class Router {
             const instance = container.resolve(target as InjectionToken);
 
             for (const route of routes) {
-                middlewares.push(...route.middlewares);
-
-                router[route.method](`${prefix}${route.path}`, ...middlewares, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-                    try {
-                        await instance[route.action](req, res, next);
-                    } catch (error) {
-                        next(error);
-                    }
-                });
+                router[route.method](
+                    `${prefix}${route.path}`,
+                    ...middlewares,
+                    ...route.middlewares,
+                    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+                        try {
+                            await instance[route.action](req, res, next);
+                        } catch (error) {
+                            next(error);
+                        }
+                    },
+                );
             }
         }
 
