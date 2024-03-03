@@ -7,4 +7,5 @@ export const sql = postgres({
     database: env.DB_NAME,
     user: env.DB_USER,
     password: env.DB_PASS,
+    transform: postgres.camel,
 });
