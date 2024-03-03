@@ -3,11 +3,9 @@ import { controller, httpDelete, httpGet, httpPost, httpPut } from '@/shared/dec
 import { RequestValidatorMiddleware } from '@/web/middlewares/request-validator.middleware';
 import { FindManyCategories } from '@/category/features/find-many-categories';
 import { FindOneCategory } from '@/category/features/find-one-category';
-import { CreateCategory } from '@/category/features/create-category';
-import { UpdateCategory } from '@/category/features/update-category';
+import { CreateCategory, createCategorySchema } from '@/category/features/create-category';
+import { UpdateCategory, updateCategorySchema } from '@/category/features/update-category';
 import { DeleteCategory } from '@/category/features/delete-category';
-import { createCategorySchema } from '@/category/dtos/create-category.dto';
-import { updateCategorySchema } from '@/category/dtos/update-category.dto';
 
 @controller('/categories')
 export default class CategoryController {
