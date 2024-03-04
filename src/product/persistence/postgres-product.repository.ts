@@ -37,4 +37,13 @@ export class PostgresProductRepository implements ProductRepository {
 
         return product ?? null;
     }
+
+    public async delete(id: ProductId): Promise<Product | null> {
+        const [product] = await sql<[Product?]>`
+            DELETE FROM public.products WHERE id = ${id}
+            RETURNING *
+        `;
+
+        return product ?? null;
+    }
 }
