@@ -13,7 +13,7 @@ export class FindManyCategories implements Feature<void, FindManyCategoriesOutpu
         const categories = await this.repository.findMany();
 
         return categories.map(category => ({
-            id: category.id!,
+            id: category.id,
             name: category.name,
             imageUrl: category.imageUrl,
         }));

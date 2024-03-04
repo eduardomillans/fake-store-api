@@ -1,7 +1,7 @@
 import { Category, CategoryId } from '@/category/category';
 
 export type CreateCategoryAttributes = Pick<Category, 'name' | 'imageUrl'>;
-export type UpdateCategoryAttributes = Required<Pick<Category, 'id' | 'name' | 'imageUrl'>>;
+export type UpdateCategoryAttributes = Pick<Category, 'id' | 'name' | 'imageUrl'>;
 
 export abstract class CategoryRepository {
     public abstract findMany(): Promise<Category[]>;

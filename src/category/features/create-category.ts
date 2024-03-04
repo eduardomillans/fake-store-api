@@ -22,6 +22,6 @@ export class CreateCategory implements Feature<CreateCategoryInput, CreateCatego
     public async handle({ name, imageUrl }: CreateCategoryInput): Promise<CreateCategoryOutput> {
         const category = await this.repository.create({ name, imageUrl });
 
-        return { id: category.id! };
+        return { id: category.id };
     }
 }

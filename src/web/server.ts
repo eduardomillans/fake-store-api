@@ -7,7 +7,6 @@ import { env } from '@/shared/env';
 import { ValidationException } from '@/shared/exceptions/validation.exception';
 import { NotFoundException } from '@/shared/exceptions/not-found.exception';
 import { Router } from '@/web/router';
-import { serializer } from '@/web/middlewares/serializer.middleware';
 
 export class Server {
     private app?: express.Application;
@@ -24,7 +23,6 @@ export class Server {
         this.app.use(express.json());
         this.app.use(cors());
         this.app.use(morgan('dev'));
-        this.app.use(serializer());
 
         // Set router
         this.app.use('/api', Router.routes(this.container));

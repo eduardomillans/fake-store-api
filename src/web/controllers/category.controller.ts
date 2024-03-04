@@ -2,10 +2,10 @@ import type { Request, Response } from 'express';
 import { controller, httpDelete, httpGet, httpPost, httpPut } from '@/shared/decorators/http';
 import { RequestValidatorMiddleware } from '@/web/middlewares/request-validator.middleware';
 import { FindManyCategories } from '@/category/features/find-many-categories';
-import { FindOneCategory } from '@/category/features/find-one-category';
+import { FindOneCategory, findOneCategorySchema } from '@/category/features/find-one-category';
 import { CreateCategory, createCategorySchema } from '@/category/features/create-category';
 import { UpdateCategory, updateCategorySchema } from '@/category/features/update-category';
-import { DeleteCategory } from '@/category/features/delete-category';
+import { DeleteCategory, deleteCategorySchema } from '@/category/features/delete-category';
 
 @controller('/categories')
 export default class CategoryController {
@@ -15,7 +15,7 @@ export default class CategoryController {
         private readonly createCategory: CreateCategory,
         private readonly updateCategory: UpdateCategory,
         private readonly deleteCategory: DeleteCategory,
-    ) {}
+    ) { }
 
     @httpGet('/')
     public async findMany(_: Request, res: Response) {
@@ -24,11 +24,9 @@ export default class CategoryController {
         return res.json(categories);
     }
 
-    @httpGet('/:id')
+    @httpGet('/:id', RequestValidatorMiddleware.with(findOneCategorySchema))
     public async findOne(req: Request, res: Response) {
-        const { id } = req.params;
-
-        const category = await this.findOneCategory.handle(id);
+        const category = await this.findOneCategory.handle(req.body);
 
         return res.json(category);
     }
@@ -47,11 +45,9 @@ export default class CategoryController {
         return res.json(category);
     }
 
-    @httpDelete('/:id')
+    @httpDelete('/:id', RequestValidatorMiddleware.with(deleteCategorySchema))
     public async delete(req: Request, res: Response) {
-        const { id } = req.params;
-
-        const category = await this.deleteCategory.handle(id);
+        const category = await this.deleteCategory.handle(req.body);
 
         return res.json(category);
     }

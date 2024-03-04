@@ -6,7 +6,7 @@ import { CategoryId } from '@/category/category';
 import { CategoryRepository } from '@/category/persistence/contracts/category.repository';
 
 export const updateCategorySchema = z.object({
-    id: z.string().min(1),
+    id: z.custom<CategoryId>(value => parseInt(value as string) > 0, 'Invalid category id'),
     name: z.string().min(1).max(255),
     imageUrl: z.string().min(1).url(),
 });
@@ -19,7 +19,7 @@ type UpdateCategoryOutput = {
 
 @injectable()
 export class UpdateCategory implements Feature<UpdateCategoryInput, UpdateCategoryOutput> {
-    public constructor(private readonly repository: CategoryRepository) {}
+    public constructor(private readonly repository: CategoryRepository) { }
 
     public async handle({ id, name, imageUrl }: UpdateCategoryInput): Promise<UpdateCategoryOutput> {
         const category = await this.repository.update({ id, name, imageUrl });
@@ -28,6 +28,6 @@ export class UpdateCategory implements Feature<UpdateCategoryInput, UpdateCatego
             throw new NotFoundException('Category not found.');
         }
 
-        return { id: category.id! };
+        return { id: category.id };
     }
 }

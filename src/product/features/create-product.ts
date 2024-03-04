@@ -8,7 +8,7 @@ export const createProductSchema = z.object({
     categoryId: z.string().uuid(),
     title: z.string().min(1).max(255),
     description: z.string(),
-    priceInCents: z.coerce.bigint(),
+    priceInCents: z.number(),
 });
 
 type CreateProductInput = z.infer<typeof createProductSchema>;

@@ -1,12 +1,10 @@
 import { sql } from '@/shared/database/postgres';
-import { CategoryRepository, CreateCategoryAttributes, UpdateCategoryAttributes } from '@/category/persistence/contracts/category.repository';
 import { Category, CategoryId } from '@/category/category';
+import { CategoryRepository, CreateCategoryAttributes, UpdateCategoryAttributes } from '@/category/persistence/contracts/category.repository';
 
 export class PostgresCategoryRepository implements CategoryRepository {
-    public constructor() {}
-
     public async findMany(): Promise<Category[]> {
-        return await sql<Category[]>`SELECT * FROM public.categories`;
+        return sql<Category[]>`SELECT * FROM public.categories ORDER BY created_at ASC`;
     }
 
     public async findOne(id: CategoryId): Promise<Category | null> {
