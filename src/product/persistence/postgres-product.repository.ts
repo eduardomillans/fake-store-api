@@ -4,7 +4,7 @@ import { Product } from '@/product/product';
 
 export class PostgresProductRepository implements ProductRepository {
     public async findMany(): Promise<Product[]> {
-        return sql<Product[]>`SELECT *, price_in_cents FROM public.products`;
+        return sql<Product[]>`SELECT * FROM public.products ORDER BY created_at ASC`;
     }
 
     public async create({ categoryId, title, description, priceInCents }: CreateProductAttributes): Promise<Product> {
