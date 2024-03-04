@@ -1,5 +1,5 @@
 import { sql } from '@/shared/database/postgres';
-import { CreateProductAttributes, ProductRepository } from '@/product/persistence/contracts/product.repository';
+import { CreateProductAttributes, ProductRepository, UpdateProductAttributes } from '@/product/persistence/contracts/product.repository';
 import { Product, ProductId } from '@/product/product';
 
 export class PostgresProductRepository implements ProductRepository {
@@ -23,5 +23,18 @@ export class PostgresProductRepository implements ProductRepository {
         `;
 
         return product;
+    }
+
+    public async update({ id, categoryId, title, description, priceInCents }: UpdateProductAttributes): Promise<Product | null> {
+        const date = new Date();
+
+        const [product] = await sql<[Product?]>`
+            UPDATE public.products
+            SET category_id = ${categoryId}, title = ${title}, description = ${description}, price_in_cents = ${priceInCents}, updated_at = ${date}
+            WHERE id = ${id}
+            RETURNING *
+        `;
+
+        return product ?? null;
     }
 }
