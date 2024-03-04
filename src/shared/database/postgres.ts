@@ -8,4 +8,7 @@ export const sql = postgres({
     user: env.DB_USER,
     password: env.DB_PASS,
     transform: postgres.camel,
+    types: {
+        bigint: postgres.BigInt,
+    },
 });
