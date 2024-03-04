@@ -4,9 +4,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import type { DependencyContainer } from 'tsyringe';
 import { env } from '@/shared/env';
-import { Router } from '@/web/router';
 import { ValidationException } from '@/shared/exceptions/validation.exception';
 import { NotFoundException } from '@/shared/exceptions/not-found.exception';
+import { Router } from '@/web/router';
+import { serializer } from '@/web/middlewares/serializer.middleware';
 
 export class Server {
     private app?: express.Application;
@@ -23,6 +24,7 @@ export class Server {
         this.app.use(express.json());
         this.app.use(cors());
         this.app.use(morgan('dev'));
+        this.app.use(serializer());
 
         // Set router
         this.app.use('/api', Router.routes(this.container));
@@ -38,6 +40,7 @@ export class Server {
             }
 
             if (error instanceof Error) {
+                console.log(error);
                 return res.status(500).json({ message: error.message });
             }
 
