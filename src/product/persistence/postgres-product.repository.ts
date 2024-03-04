@@ -1,10 +1,16 @@
 import { sql } from '@/shared/database/postgres';
 import { CreateProductAttributes, ProductRepository } from '@/product/persistence/contracts/product.repository';
-import { Product } from '@/product/product';
+import { Product, ProductId } from '@/product/product';
 
 export class PostgresProductRepository implements ProductRepository {
     public async findMany(): Promise<Product[]> {
         return sql<Product[]>`SELECT * FROM public.products ORDER BY created_at ASC`;
+    }
+
+    public async findOne(id: ProductId): Promise<Product | null> {
+        const [product] = await sql<[Product?]>`SELECT * FROM public.products WHERE id = ${id}`;
+
+        return product ?? null;
     }
 
     public async create({ categoryId, title, description, priceInCents }: CreateProductAttributes): Promise<Product> {
