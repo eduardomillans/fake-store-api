@@ -3,6 +3,10 @@ import { CreateProductAttributes, ProductRepository } from '@/product/persistenc
 import { Product } from '@/product/product';
 
 export class PostgresProductRepository implements ProductRepository {
+    public async findMany(): Promise<Product[]> {
+        return sql<Product[]>`SELECT * FROM public.products`;
+    }
+
     public async create({ categoryId, title, description, priceInCents }: CreateProductAttributes): Promise<Product> {
         const date = new Date();
 
